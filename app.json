@@ -73,6 +73,12 @@
       ],
       "expo-font",
       "expo-sharing"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b5e8f9dd-1f43-4b8d-b13c-b73c321459d3"
+      }
+    },
+    "owner": "kodieis-team"
   }
 }
