@@ -12,6 +12,8 @@ export type RootStackParamList = {
   Main: NavigatorScreenParams<MainTabParamList> | undefined;
   CameraSetup: { profileId?: string; useTargetSystemPairing?: boolean } | undefined;
   CameraDiagnostics: undefined;
+  RemotePhoneConnect: undefined;
+  TargetCameraMode: undefined;
   TargetSystemSetup: undefined;
   LiveTarget: undefined;
   NewSession: undefined;

@@ -51,6 +51,7 @@ App / navigation / range UI
         ├── src/infrastructure
         │     ├── camera         generic + RLC-520A local adapters and URL redaction
         │     ├── capture        native HTTP still probe/capture and preview creation
+        │     ├── remotePhone    local mock pairing/command scaffold for phone-as-camera mode
         │     ├── database       SQLite migrations and repositories
         │     └── security       Keychain/Keystore credential vault
         └── src/ui               mobile screens, controls, and RTSP target viewer
@@ -60,6 +61,8 @@ test_assets                     real target-image fixture convention
 ```
 
 The important boundary is `CameraAdapter`: screens do not know Reolink URL patterns. An adapter returns candidate local RTSP/snapshot endpoints, and the app uses redacted versions for diagnostics. Authenticated URLs exist only in memory at the playback/capture boundary.
+
+Remote Phone Camera Mode is documented in [docs/remote-phone-camera-mode.md](docs/remote-phone-camera-mode.md). It introduces a broader `CameraSource` contract for IP cameras, remote phones, imported images, and future ShotSight hardware while keeping the current Reolink/IP-camera path intact.
 
 The ONVIF probe and future radio/battery gateway live behind separate infrastructure boundaries. They receive credential-safe local configuration from the application layer and return sanitized status, so neither vendor cloud APIs nor target-hardware details leak into range screens.
 
@@ -129,6 +132,24 @@ npm run ios:device
 ```
 
 That command runs `expo run:ios --device`. Expo will generate the native `ios/` project if needed, install Pods, build with Xcode, and install the development client on the connected phone.
+
+On the first free Personal Team install, iOS may require you to manually trust the developer before the app will launch. If the app installs but the Mac reports that the profile has not been explicitly trusted, open the iPhone's **Settings -> General -> VPN & Device Management**, select the **Developer App** entry for your Apple ID or Personal Team, and tap **Trust**. Keep the iPhone online for this trust verification step.
+
+If Expo shows `Build Succeeded` but installation ends with `ApplicationVerificationFailed`, check `.expo/xcodebuild.log` for `errSecInternalComponent` or unsigned embedded frameworks. This usually means macOS denied one of CocoaPods' parallel `codesign` calls access to the Apple Development private key. In **Keychain Access**, find the private key under the `Apple Development` certificate, update its access control to allow `/usr/bin/codesign` or choose **Always Allow** when prompted, then rebuild with pod framework signing serialized:
+
+```bash
+xcrun xctrace list devices
+
+xcodebuild clean build \
+  -workspace ios/shotSight.xcworkspace \
+  -configuration Debug \
+  -scheme shotSight \
+  -destination 'id=<your-connected-iphone-id>' \
+  COCOAPODS_PARALLEL_CODE_SIGN=false \
+  COMPILER_INDEX_STORE_ENABLE=NO
+
+npm run ios:device
+```
 
 If automatic signing fails, or Expo reports `No code signing certificates are available to use`, open the generated workspace manually:
 

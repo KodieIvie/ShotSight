@@ -5,4 +5,5 @@ export * from './database';
 export * from './export';
 export * from './hardware';
 export * from './onvif';
+export * from './remotePhone';
 export * from './security';

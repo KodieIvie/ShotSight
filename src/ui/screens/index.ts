@@ -20,5 +20,7 @@ export * from './TargetToolsScreen';
 export * from './TargetRoiScreen';
 export * from './TargetCalibrationScreen';
 export * from './PointOfAimScreen';
+export * from './RemotePhoneConnectScreen';
 export * from './TargetPlaybackScreen';
+export * from './TargetCameraModeScreen';
 export * from './ZeroingAssistantScreen';

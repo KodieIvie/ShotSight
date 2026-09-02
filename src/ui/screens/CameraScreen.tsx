@@ -42,6 +42,24 @@ export function CameraScreen(_props: Props) {
         <Button icon="plus" label="Add camera" onPress={() => rootNavigation.navigate('CameraSetup')} style={styles.addButton} />
         <Button icon="stethoscope" label="Diagnostics" onPress={() => rootNavigation.navigate('CameraDiagnostics')} variant="secondary" />
       </View>
+      <View style={styles.remoteActions}>
+        <Button
+          compact
+          icon="cellphone-link"
+          label="Connect target phone"
+          onPress={() => rootNavigation.navigate('RemotePhoneConnect')}
+          style={styles.remoteButton}
+          variant="secondary"
+        />
+        <Button
+          compact
+          icon="cellphone-wireless"
+          label="Target camera mode"
+          onPress={() => rootNavigation.navigate('TargetCameraMode')}
+          style={styles.remoteButton}
+          variant="ghost"
+        />
+      </View>
       <Button
         compact
         icon="qrcode-scan"
@@ -55,7 +73,7 @@ export function CameraScreen(_props: Props) {
         <Card style={styles.empty}>
           <MaterialCommunityIcons color={palette.accent} name="camera-wireless-outline" size={44} />
           <Text style={styles.emptyTitle}>No target camera yet</Text>
-          <Text style={styles.emptyCopy}>Start with the RLC-520A preset or enter a standards-based RTSP camera manually.</Text>
+          <Text style={styles.emptyCopy}>Start with the RLC-520A preset, enter a standards-based RTSP camera manually, or pair another phone as the target camera.</Text>
         </Card>
       ) : (
         <View style={styles.list}>
@@ -109,6 +127,8 @@ function safeError(error: unknown): string {
 const styles = StyleSheet.create({
   actions: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.md },
   addButton: { flex: 1 },
+  remoteActions: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.sm },
+  remoteButton: { flex: 1 },
   systemSetup: { alignSelf: 'flex-start', marginTop: spacing.sm },
   empty: { marginTop: spacing.lg, alignItems: 'center', gap: spacing.sm, paddingVertical: spacing.xl },
   emptyTitle: { ...typography.heading, color: palette.text },

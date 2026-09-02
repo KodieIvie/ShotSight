@@ -147,10 +147,16 @@ export type CaptureAnalysisStatus =
 export type CaptureSource =
   | "http-snapshot"
   | "main-stream-frame"
-  | "preview-frame";
+  | "preview-frame"
+  | "remote-phone-photo"
+  | "remote-phone-preview"
+  | "imported-image";
 
 export interface CameraCaptureMetadata {
   readonly source: CaptureSource;
+  readonly sourceType?: "ip-camera" | "remote-phone" | "imported-image" | "shotsight-hardware";
+  readonly sourceDeviceId?: string;
+  readonly transferStatus?: "local" | "queued" | "uploading" | "transferred" | "failed";
   readonly latencyMs?: number;
   readonly cameraTimestamp?: IsoTimestamp;
   readonly mimeType?: string;

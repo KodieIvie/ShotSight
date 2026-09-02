@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ShotSightProvider, useShotSight } from './src/application/ShotSightProvider';
-import { BootScreen, CameraDiagnosticsScreen, CameraScreen, CameraSetupScreen, CandidateReviewRouteScreen, CaptureCompareScreen, CaptureDetailScreen, GroupEditorScreen, LiveTargetScreen, ManualShotScreen, NewSessionScreen, PointOfAimScreen, SessionExportScreen, SessionsScreen, SettingsScreen, ShotsScreen, TargetCalibrationScreen, TargetManagerScreen, TargetPlaybackScreen, TargetRoiScreen, TargetScreen, TargetSystemSetupScreen, TargetToolsScreen, ZeroingAssistantScreen } from './src/ui/screens';
+import { BootScreen, CameraDiagnosticsScreen, CameraScreen, CameraSetupScreen, CandidateReviewRouteScreen, CaptureCompareScreen, CaptureDetailScreen, GroupEditorScreen, LiveTargetScreen, ManualShotScreen, NewSessionScreen, PointOfAimScreen, RemotePhoneConnectScreen, SessionExportScreen, SessionsScreen, SettingsScreen, ShotsScreen, TargetCalibrationScreen, TargetCameraModeScreen, TargetManagerScreen, TargetPlaybackScreen, TargetRoiScreen, TargetScreen, TargetSystemSetupScreen, TargetToolsScreen, ZeroingAssistantScreen } from './src/ui/screens';
 import type { MainTabParamList, RootStackParamList } from './src/ui/navigation/types';
 import { palette } from './src/ui/theme';
 
@@ -60,6 +60,8 @@ function AppRouter() {
         <Stack.Screen component={MainTabs} name="Main" options={{ headerShown: false }} />
         <Stack.Screen component={CameraSetupScreen} name="CameraSetup" options={{ title: 'Local camera setup' }} />
         <Stack.Screen component={CameraDiagnosticsScreen} name="CameraDiagnostics" options={{ title: 'Local diagnostics' }} />
+        <Stack.Screen component={RemotePhoneConnectScreen} name="RemotePhoneConnect" options={{ title: 'Connect target phone' }} />
+        <Stack.Screen component={TargetCameraModeScreen} name="TargetCameraMode" options={{ title: 'Target camera mode' }} />
         <Stack.Screen component={TargetSystemSetupScreen} name="TargetSystemSetup" options={{ title: 'Target system setup' }} />
         <Stack.Screen component={LiveTargetScreen} name="LiveTarget" options={{ animation: 'fade', headerShown: false, presentation: 'fullScreenModal' }} />
         <Stack.Screen component={NewSessionScreen} name="NewSession" options={{ title: 'New session' }} />
