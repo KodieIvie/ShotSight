@@ -94,7 +94,15 @@ npm run typecheck
 npm test
 ```
 
-Install Xcode from the Mac App Store, open it once, accept licenses, and install any requested components. In Xcode, add your Apple ID under **Xcode -> Settings -> Accounts** so Xcode can use your Personal Team for signing.
+Install Xcode from the Mac App Store, open it once, accept licenses, and install any requested components. React Native 0.86 requires Xcode 16.1 or newer; Xcode 15.4 fails during `pod install` with `Please upgrade XCode`. Xcode 16.1 also requires macOS Sonoma 14.5 or newer, so update macOS first if the App Store keeps Xcode pinned to 15.4. For iOS 26.x devices, prefer the current macOS/Xcode pair Apple lists for that iOS version. After installing or updating Xcode, make sure macOS is using the full Xcode toolchain:
+
+```bash
+sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+sudo xcodebuild -license accept
+xcodebuild -version
+```
+
+In Xcode, add your Apple ID under **Xcode -> Settings -> Accounts** so Xcode can use your Personal Team for signing.
 
 If CocoaPods is missing, install it before building:
 
@@ -108,6 +116,12 @@ or, if you use Homebrew:
 brew install cocoapods
 ```
 
+If CocoaPods warns that the terminal is not using UTF-8, export a UTF-8 locale before running iOS commands:
+
+```bash
+export LANG=en_US.UTF-8
+```
+
 Connect the iPhone by USB, trust the Mac on the phone, and enable Developer Mode if iOS prompts for it. Then run:
 
 ```bash
@@ -116,7 +130,7 @@ npm run ios:device
 
 That command runs `expo run:ios --device`. Expo will generate the native `ios/` project if needed, install Pods, build with Xcode, and install the development client on the connected phone.
 
-If automatic signing fails, open the generated workspace manually:
+If automatic signing fails, or Expo reports `No code signing certificates are available to use`, open the generated workspace manually:
 
 ```bash
 open ios/*.xcworkspace
