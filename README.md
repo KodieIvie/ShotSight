@@ -65,7 +65,7 @@ The ONVIF probe and future radio/battery gateway live behind separate infrastruc
 
 ## Setup
 
-Prerequisites: Node 22+, npm, and the native toolchain for the platform you will build (Android Studio/SDK for Android; macOS + Xcode for iOS).
+Prerequisites: Node 22+, npm, and the native toolchain for the platform you will build. Use Android Studio/SDK for Android. Use macOS + Xcode for local iOS device builds.
 
 ```powershell
 npm install
@@ -80,9 +80,70 @@ npm run android
 npm start
 ```
 
-On macOS, use `npm run ios`. Rebuild the development client after changing native dependencies or `app.json`. `npm start` targets the development client; do not open this app in Expo Go.
+### Local iPhone development without paid Apple membership
 
-Useful commands:
+For early iPhone testing, use a MacBook, Xcode, a connected personal iPhone, and your free Apple ID Personal Team. Do not use EAS cloud signing for this workflow. Expo documents [local development builds](https://docs.expo.dev/develop/development-builds/introduction/) as the route for installing a development build on an iPhone without a paid Apple Developer Program account, and Apple documents that [Xcode can install apps on your personal device](https://developer.apple.com/help/account/membership/program-enrollment/) without paid enrollment.
+
+On the Mac:
+
+```bash
+git clone https://github.com/KodieIvie/ShotSight.git
+cd ShotSight
+npm install
+npm run typecheck
+npm test
+```
+
+Install Xcode from the Mac App Store, open it once, accept licenses, and install any requested components. In Xcode, add your Apple ID under **Xcode -> Settings -> Accounts** so Xcode can use your Personal Team for signing.
+
+If CocoaPods is missing, install it before building:
+
+```bash
+sudo gem install cocoapods
+```
+
+or, if you use Homebrew:
+
+```bash
+brew install cocoapods
+```
+
+Connect the iPhone by USB, trust the Mac on the phone, and enable Developer Mode if iOS prompts for it. Then run:
+
+```bash
+npm run ios:device
+```
+
+That command runs `expo run:ios --device`. Expo will generate the native `ios/` project if needed, install Pods, build with Xcode, and install the development client on the connected phone.
+
+If automatic signing fails, open the generated workspace manually:
+
+```bash
+open ios/*.xcworkspace
+```
+
+In Xcode:
+
+1. Select the ShotSight app target.
+2. Open **Signing & Capabilities**.
+3. Enable **Automatically manage signing**.
+4. Set **Team** to your Personal Team.
+5. Keep the bundle identifier from `app.json` unless Xcode says it is unavailable for your Personal Team. If that happens, use a unique local identifier such as `com.kodieivie.shotsight.dev` for the local generated project only.
+6. Select your connected iPhone as the run destination and press **Run**.
+
+The generated `ios/` and `android/` folders are intentionally ignored by git. Keep native configuration reproducible through `app.json`, `package.json`, `package-lock.json`, and Expo config plugins. If a native package or iOS permission is added later, update those source config files, then regenerate with `npx expo prebuild`.
+
+Daily iPhone development loop:
+
+```bash
+npm start
+```
+
+Open the installed shotSight development client on the iPhone and connect it to the Metro server shown in the terminal. Rebuild with `npm run ios:device` after changing native dependencies, `app.json`, Expo plugins, iOS permissions, or the bundle identifier.
+
+Expo Go is not a supported runtime for this app. The RTSP viewer uses a custom native VLC-backed module, and the local camera workflow depends on native behavior that Expo Go cannot load.
+
+### Useful commands
 
 ```text
 npm run typecheck    # strict TypeScript validation
@@ -90,6 +151,7 @@ npm test             # domain + image-harness tests
 npm run harness -- --help
 npm run doctor       # Expo dependency/config diagnostic
 npm run prebuild     # generate native projects when needed
+npm run ios:device   # build/install on a connected iPhone from macOS
 ```
 
 ## Isolated-LAN camera workflow

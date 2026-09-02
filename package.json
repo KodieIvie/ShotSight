@@ -49,6 +49,7 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "ios:device": "expo run:ios --device",
     "prebuild": "expo prebuild",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
