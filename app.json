@@ -13,6 +13,7 @@
       "bundleIdentifier": "app.shotsight.mobile",
       "infoPlist": {
         "NSLocalNetworkUsageDescription": "shotSight connects directly to your target camera on the local range network. Internet access is not required.",
+        "ITSAppUsesNonExemptEncryption": false,
         "NSAppTransportSecurity": {
           "NSAllowsLocalNetworking": true
         }
